@@ -23,14 +23,18 @@ public class WarController {
      * @return Result of the war and Lengaburu deployment ex: [WINS/LOSES] NNH NNE NNAT NNSG
      */
     public String getPlanetLengaburuDeploymentAndResult(String felicorniaDeploymentAsString) {
-        BattalionStrength felicorniaDeployment = extractFelicorniaDeployment(felicorniaDeploymentAsString).getDeployment();
-        BattalionStrength.Builder lengaburuDeploymentBuilder = new BattalionStrength.Builder();
-        BattalionStrength lengaburuTotalStrength = PlanetLengaburu.getInstance().getTotalStrength();
-        BattalionType.getBattalionsOnOrderOfStrength().forEach(battalionType -> battalionType.getStrategy().apply(
-                felicorniaDeployment, lengaburuTotalStrength, lengaburuDeploymentBuilder)
-        );
-        PlanetLengaburu.getInstance().setDeployment(lengaburuDeploymentBuilder.build());
-        return determinePossibleResult();
+        try {
+            BattalionStrength felicorniaDeployment = extractFelicorniaDeployment(felicorniaDeploymentAsString).getDeployment();
+            BattalionStrength.Builder lengaburuDeploymentBuilder = new BattalionStrength.Builder();
+            BattalionStrength lengaburuTotalStrength = PlanetLengaburu.getInstance().getTotalStrength();
+            BattalionType.getBattalionsOnOrderOfStrength().forEach(battalionType -> battalionType.getStrategy().apply(
+                    felicorniaDeployment, lengaburuTotalStrength, lengaburuDeploymentBuilder)
+            );
+            PlanetLengaburu.getInstance().setDeployment(lengaburuDeploymentBuilder.build());
+            return determinePossibleResult();
+        } catch (Exception exception) {
+            return exception.getMessage();
+        }
     }
 
     /**
@@ -49,7 +53,7 @@ public class WarController {
      * @param felicorniaDeploymentAsString Felicornia deployment in string ex: 'NNH NNE NNAT NNSG'
      * @return PlanetFelicornia object model
      */
-    private PlanetFelicornia extractFelicorniaDeployment(String felicorniaDeploymentAsString) {
+    private PlanetFelicornia extractFelicorniaDeployment(String felicorniaDeploymentAsString) throws Exception {
         String[] parameters = felicorniaDeploymentAsString.split(EMPTY_STRING);
         PlanetFelicornia felicornia = PlanetFelicornia.getInstance();
         felicornia.buildUpDeployment(

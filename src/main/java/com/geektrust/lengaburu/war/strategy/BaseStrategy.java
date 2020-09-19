@@ -10,7 +10,7 @@ public abstract class BaseStrategy {
         Battalion felicorniaBattalionDeployment = getFelicorniaDeployment(felicorniaDeployment);
         Battalion felicorniaLowerBattalionDeployment = getFelicorniaLowerDeployment(felicorniaDeployment);
         Battalion lengaburuBattalionCapacity = getLengaburuCapacity(lengaburuStrength);
-        Battalion lengaburuLowerBattalionCapacity = getLengaburuLowerCapacity(felicorniaDeployment);
+        Battalion lengaburuLowerBattalionCapacity = getLengaburuLowerCapacity(lengaburuStrength);
         Double lengaburuPlanetFactor = PlanetLengaburu.getInstance().getFactor() / PlanetFelicornia.getInstance().getFactor();
         // in case of excess strength
         if (lengaburuBattalionCapacity.getStrength() * lengaburuPlanetFactor >= felicorniaBattalionDeployment.getStrength()) {
@@ -47,4 +47,8 @@ public abstract class BaseStrategy {
 
     abstract protected void updateLowerDeployment(BattalionStrength.Builder deployment, int deploymentStrength);
 
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 }

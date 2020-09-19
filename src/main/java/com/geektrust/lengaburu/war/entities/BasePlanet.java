@@ -29,11 +29,22 @@ public class BasePlanet {
         return factor;
     }
 
-    public void buildUpDeployment(int horses, int elephants, int armouredTanks, int slingGuns) {
+    public void buildUpDeployment(int horses, int elephants, int armouredTanks, int slingGuns) throws Exception {
         this.deployment = new BattalionStrength(horses, elephants, armouredTanks, slingGuns);
+        validateDeployment();
     }
 
-    public void setDeployment(BattalionStrength deployment) {
+    public void setDeployment(BattalionStrength deployment) throws Exception {
         this.deployment = deployment;
+        validateDeployment();
+    }
+
+    private void validateDeployment() throws Exception {
+        if (this.deployment.getHorses().getStrength() > this.getTotalStrength().getHorses().getStrength()
+                || this.deployment.getElephants().getStrength() > this.getTotalStrength().getElephants().getStrength()
+                || this.deployment.getArmouredTanks().getStrength() > this.getTotalStrength().getArmouredTanks().getStrength()
+                || this.deployment.getSlingGuns().getStrength() > this.getTotalStrength().getSlingGuns().getStrength() ) {
+            throw new Exception("Deployment exceeds capacity." + "Capacity: " + this.getTotalStrength() + ", Deployment: " + this.deployment);
+        }
     }
 }
