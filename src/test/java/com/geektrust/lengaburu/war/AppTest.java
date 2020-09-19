@@ -12,6 +12,20 @@ public class AppTest {
 
     @Test
     public void test01() {
-        assertEquals("WINS 52H 50E 10AT 3SG", app.processInputFromCli(new String[]{"FALICORNIA_ATTACK 100H 101E 20AT 5SG"}));
+        assertEquals("WINS 52H 50E 10AT 3SG", invokeApp("FALICORNIA_ATTACK 100H 101E 20AT 5SG"));
+    }
+
+    @Test
+    public void test02() {
+        assertEquals("WINS 75H 50E 10AT 5SG", invokeApp("FALICORNIA_ATTACK 150H 96E 26AT 8SG"));
+    }
+
+    @Test
+    public void test03() {
+        assertEquals("LOSES 100H 38E 10AT 5SG", invokeApp("FALICORNIA_ATTACK 250H 50E 20AT 15SG"));
+    }
+
+    private String invokeApp(String command) {
+        return app.processInputFromCli(new String[]{command});
     }
 }

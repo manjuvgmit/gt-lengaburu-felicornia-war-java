@@ -21,8 +21,8 @@ public class ElephantBattalionStrategy extends BaseStrategy {
     }
 
     @Override
-    protected void updateLowerDeployment(BattalionStrength.Builder deployment, int deploymentStrength) {
-        deployment.withHorses(deployment.getHorses() + deploymentStrength);
+    protected void updateLowerDeployment(BattalionStrength.Builder deployment, int additionalDeploymentStrength) {
+        deployment.withHorses(deployment.getHorses() + additionalDeploymentStrength);
     }
 
     @Override

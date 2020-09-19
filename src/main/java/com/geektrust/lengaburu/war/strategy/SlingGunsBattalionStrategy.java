@@ -21,8 +21,8 @@ public class SlingGunsBattalionStrategy extends BaseStrategy {
     }
 
     @Override
-    protected void updateLowerDeployment(BattalionStrength.Builder deployment, int deploymentStrength) {
-        deployment.withArmouredTanks(deployment.getArmouredTanks() + deploymentStrength);
+    protected void updateLowerDeployment(BattalionStrength.Builder deployment, int additionalDeploymentStrength) {
+        deployment.withArmouredTanks(deployment.getArmouredTanks() + additionalDeploymentStrength);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class HorseBattalionStrategy extends BaseStrategy {
     }
 
     @Override
-    protected void updateLowerDeployment(BattalionStrength.Builder deployment, int deploymentStrength) {
+    protected void updateLowerDeployment(BattalionStrength.Builder deployment, int additionalDeploymentStrength) {
         // Do nothing
     }
 

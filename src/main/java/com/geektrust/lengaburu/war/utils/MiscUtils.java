@@ -15,7 +15,4 @@ public final class MiscUtils {
         return Integer.parseInt(value.replaceAll(replaceText, ""));
     }
 
-//    public static Integer getFactoredValue() {
-//
-//    }
 }

@@ -21,8 +21,8 @@ public class ArmouredTankBattalionStrategy extends BaseStrategy {
     }
 
     @Override
-    protected void updateLowerDeployment(BattalionStrength.Builder deployment, int deploymentStrength) {
-        deployment.withElephants(deployment.getElephants() + deploymentStrength);
+    protected void updateLowerDeployment(BattalionStrength.Builder deployment, int additionalDeploymentStrength) {
+        deployment.withElephants(deployment.getElephants() + additionalDeploymentStrength);
     }
 
     @Override
