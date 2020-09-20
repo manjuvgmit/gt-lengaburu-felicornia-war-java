@@ -10,10 +10,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public enum BattalionType {
-    HORSE("H", 1, new HorseBattalionStrategy()),
-    ELEPHANT("E",2, new ElephantBattalionStrategy()),
-    ARMOURED_TANK("AT",3, new ArmouredTankBattalionStrategy()),
-    SLING_GUN("SG",4, new SlingGunsBattalionStrategy());
+    HORSE("H", (int)Math.pow(2, 1), new HorseBattalionStrategy()),
+    ELEPHANT("E",(int)Math.pow(2, 2), new ElephantBattalionStrategy()),
+    ARMOURED_TANK("AT",(int)Math.pow(2, 3), new ArmouredTankBattalionStrategy()),
+    SLING_GUN("SG",(int)Math.pow(2, 4), new SlingGunsBattalionStrategy());
 
     private final String shortName;
     private final Integer orderOfStrength;

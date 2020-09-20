@@ -1,10 +1,10 @@
 package com.geektrust.lengaburu.war.entities.battalion;
 
 public class BattalionStrength {
-    private final Battalion horses;
-    private final Battalion elephants;
-    private final Battalion armouredTanks;
-    private final Battalion slingGuns;
+    private Battalion horses;
+    private Battalion elephants;
+    private Battalion armouredTanks;
+    private Battalion slingGuns;
 
     public BattalionStrength(int horses, int elephants, int armouredTanks, int slingGuns) {
         this.horses = new HorseBattalion(horses);
@@ -12,6 +12,7 @@ public class BattalionStrength {
         this.armouredTanks = new ArmouredTankBattalion(armouredTanks);
         this.slingGuns = new SlingGunBattalion(slingGuns);
     }
+
 
     public Battalion getHorses() {
         return horses;
@@ -29,16 +30,32 @@ public class BattalionStrength {
         return slingGuns;
     }
 
+    public void setHorses(Battalion horses) {
+        this.horses = horses;
+    }
+
+    public void setElephants(Battalion elephants) {
+        this.elephants = elephants;
+    }
+
+    public void setArmouredTanks(Battalion armouredTanks) {
+        this.armouredTanks = armouredTanks;
+    }
+
+    public void setSlingGuns(Battalion slingGuns) {
+        this.slingGuns = slingGuns;
+    }
+
     public int getTotalBattalionStrength() {
-        return (horses != null ? horses.getTotalStrength() : 0)
-                + (elephants != null ? elephants.getTotalStrength() : 0)
-                    + (armouredTanks != null ? armouredTanks.getTotalStrength() : 0)
-                        + (slingGuns != null ? slingGuns.getTotalStrength() : 0);
+        return horses.getTotalStrength()
+                + elephants.getTotalStrength()
+                + armouredTanks.getTotalStrength()
+                + slingGuns.getTotalStrength();
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("BattalionStrength{");
+        StringBuilder sb = new StringBuilder("BattalionStrength{");
         sb.append("horses=").append(horses);
         sb.append(", elephants=").append(elephants);
         sb.append(", armouredTanks=").append(armouredTanks);
@@ -48,7 +65,7 @@ public class BattalionStrength {
     }
 
     public String toStringCustom() {
-        final StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append(horses.toStringCustom());
         sb.append(" ").append(elephants.toStringCustom());
         sb.append(" ").append(armouredTanks.toStringCustom());
@@ -57,10 +74,13 @@ public class BattalionStrength {
     }
 
     public static class Builder {
-        private int horses;
-        private int elephants;
-        private int armouredTanks;
-        private int slingGuns;
+        private int horses = 0;
+        private int elephants = 0;
+        private int armouredTanks = 0;
+        private int slingGuns = 0;
+
+        public Builder() {
+        }
 
         public int getHorses() {
             return horses;

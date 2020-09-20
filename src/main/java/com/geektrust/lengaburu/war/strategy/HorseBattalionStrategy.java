@@ -1,37 +1,37 @@
 package com.geektrust.lengaburu.war.strategy;
 
-import com.geektrust.lengaburu.war.entities.battalion.Battalion;
-import com.geektrust.lengaburu.war.entities.battalion.BattalionStrength;
+import com.geektrust.lengaburu.war.entities.battalion.DeploymentBuilder;
 
 public class HorseBattalionStrategy extends BaseStrategy {
 
     @Override
-    public Battalion getFelicorniaDeployment(BattalionStrength felicorniaDeployment) {
-        return felicorniaDeployment.getHorses();
+    protected int getFelicorniaDeployment(DeploymentBuilder deploymentBuilder) {
+        return deploymentBuilder.getTargetDeployment().getHorses();
     }
 
     @Override
-    public Battalion getLengaburuCapacity(BattalionStrength lengaburuStrength) {
-        return lengaburuStrength.getHorses();
+    protected int getLengaburuCapacity(DeploymentBuilder deploymentBuilder) {
+        return deploymentBuilder.getLengaburuStrength().getHorses().getStrength();
     }
 
     @Override
-    public void updateDeployment(BattalionStrength.Builder deployment, int deploymentStrength) {
-        deployment.withHorses(deploymentStrength);
+    protected int getFelicorniaLowerDeployment(DeploymentBuilder deploymentBuilder) {
+        return 0;
     }
 
     @Override
-    protected void updateLowerDeployment(BattalionStrength.Builder deployment, int additionalDeploymentStrength) {
+    protected int getLengaburuLowerCapacity(DeploymentBuilder deploymentBuilder) {
+        return 0;
+    }
+
+    @Override
+    protected void updateDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
+        deploymentBuilder.getDeployment().withHorses(deploymentBuilder.getDeployment().getHorses() + deploymentStrength);
+//        deploymentBuilder.getTargetDeployment().withHorses(deploymentBuilder.getTargetDeployment().getHorses() - deploymentStrength);
+    }
+
+    @Override
+    protected void updateLowerDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
         // Do nothing
-    }
-
-    @Override
-    public Battalion getFelicorniaLowerDeployment(BattalionStrength felicorniaDeployment) {
-        return null;
-    }
-
-    @Override
-    public Battalion getLengaburuLowerCapacity(BattalionStrength lengaburuStrength) {
-        return null;
     }
 }

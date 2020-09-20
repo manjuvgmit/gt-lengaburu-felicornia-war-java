@@ -44,7 +44,7 @@ public class BasePlanet {
                 || this.deployment.getElephants().getStrength() > this.getTotalStrength().getElephants().getStrength()
                 || this.deployment.getArmouredTanks().getStrength() > this.getTotalStrength().getArmouredTanks().getStrength()
                 || this.deployment.getSlingGuns().getStrength() > this.getTotalStrength().getSlingGuns().getStrength() ) {
-            throw new Exception("Deployment exceeds capacity." + "Capacity: " + this.getTotalStrength() + ", Deployment: " + this.deployment);
+            throw new Exception("Deployment exceeds capacity." + "Capacity: " + this.getTotalStrength().toStringCustom() + ", Deployment: " + this.deployment.toStringCustom());
         }
     }
 }

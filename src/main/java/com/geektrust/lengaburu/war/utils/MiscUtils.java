@@ -15,4 +15,8 @@ public final class MiscUtils {
         return Integer.parseInt(value.replaceAll(replaceText, ""));
     }
 
+    public static Integer getFactoredValue(Integer strength, Double powerFactor) {
+        return (int) Math.round(strength * powerFactor);
+    }
+
 }

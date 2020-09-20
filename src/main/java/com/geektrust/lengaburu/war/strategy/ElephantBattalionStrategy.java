@@ -2,36 +2,39 @@ package com.geektrust.lengaburu.war.strategy;
 
 import com.geektrust.lengaburu.war.entities.battalion.Battalion;
 import com.geektrust.lengaburu.war.entities.battalion.BattalionStrength;
+import com.geektrust.lengaburu.war.entities.battalion.DeploymentBuilder;
 
 public class ElephantBattalionStrategy extends BaseStrategy {
 
     @Override
-    public Battalion getFelicorniaDeployment(BattalionStrength felicorniaDeployment) {
-        return felicorniaDeployment.getElephants();
+    protected int getFelicorniaDeployment(DeploymentBuilder deploymentBuilder) {
+        return deploymentBuilder.getTargetDeployment().getElephants();
     }
 
     @Override
-    public Battalion getLengaburuCapacity(BattalionStrength lengaburuStrength) {
-        return lengaburuStrength.getElephants();
+    protected int getLengaburuCapacity(DeploymentBuilder deploymentBuilder) {
+        return deploymentBuilder.getLengaburuStrength().getElephants().getStrength();
     }
 
     @Override
-    public void updateDeployment(BattalionStrength.Builder deployment, int deploymentStrength) {
-        deployment.withElephants(deploymentStrength);
+    protected int getFelicorniaLowerDeployment(DeploymentBuilder deploymentBuilder) {
+        return deploymentBuilder.getTargetDeployment().getHorses();
     }
 
     @Override
-    protected void updateLowerDeployment(BattalionStrength.Builder deployment, int additionalDeploymentStrength) {
-        deployment.withHorses(deployment.getHorses() + additionalDeploymentStrength);
+    protected int getLengaburuLowerCapacity(DeploymentBuilder deploymentBuilder) {
+        return deploymentBuilder.getLengaburuStrength().getHorses().getStrength();
     }
 
     @Override
-    public Battalion getFelicorniaLowerDeployment(BattalionStrength felicorniaDeployment) {
-        return felicorniaDeployment.getHorses();
+    protected void updateDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
+        deploymentBuilder.getDeployment().withElephants(deploymentBuilder.getDeployment().getElephants() + deploymentStrength);
+//        deploymentBuilder.getTargetDeployment().withElephants(deploymentBuilder.getTargetDeployment().getElephants() - deploymentStrength);
     }
 
     @Override
-    public Battalion getLengaburuLowerCapacity(BattalionStrength lengaburuStrength) {
-        return lengaburuStrength.getHorses();
+    protected void updateLowerDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
+        deploymentBuilder.getDeployment().withHorses(deploymentBuilder.getDeployment().getHorses() + deploymentStrength);
+//        deploymentBuilder.getTargetDeployment().withHorses(deploymentBuilder.getTargetDeployment().getHorses() - deploymentStrength);
     }
 }
