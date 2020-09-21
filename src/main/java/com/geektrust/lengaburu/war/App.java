@@ -36,7 +36,7 @@ public class App {
      * @return output from the program
      */
     public String processInputFromCli(String[] args) {
-        return getController().getPlanetLengaburuDeploymentAndResult(String.join(" ", args));
+        return getController().getPlanetLengaburuDeploymentAndResultForWar(String.join(" ", args));
     }
 
     private WarController getController() {
@@ -51,7 +51,7 @@ public class App {
      */
     public List<String> processInputFromFile(String arg) throws IOException {
         return MiscUtils.getInputFromFile(arg).stream()
-                .map(commands -> getController().getPlanetLengaburuDeploymentAndResult(commands))
+                .map(commands -> getController().getPlanetLengaburuDeploymentAndResultForWar(commands))
                 .collect(Collectors.toList());
     }
 }

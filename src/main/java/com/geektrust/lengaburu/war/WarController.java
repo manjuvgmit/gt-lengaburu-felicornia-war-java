@@ -1,10 +1,12 @@
 package com.geektrust.lengaburu.war;
 
-import com.geektrust.lengaburu.war.entities.PlanetFelicornia;
-import com.geektrust.lengaburu.war.entities.PlanetLengaburu;
+import com.geektrust.lengaburu.war.entities.Planet;
 import com.geektrust.lengaburu.war.entities.Planets;
+import com.geektrust.lengaburu.war.entities.battalion.BattalionStrength;
 import com.geektrust.lengaburu.war.entities.battalion.BattalionType;
 import com.geektrust.lengaburu.war.entities.battalion.DeploymentBuilder;
+
+import java.util.Optional;
 
 /***
  * This class orchestrate the war strategy, determines deployment and returns end result
@@ -22,18 +24,30 @@ public class WarController {
      * @param felicorniaDeploymentAsString Felicornia deployment in string ex: 'NNH NNE NNAT NNSG'
      * @return Result of the war and Lengaburu deployment ex: [WINS/LOSES] NNH NNE NNAT NNSG
      */
-    public String getPlanetLengaburuDeploymentAndResult(String felicorniaDeploymentAsString) {
+    public String getPlanetLengaburuDeploymentAndResultForWar(String felicorniaDeploymentAsString) {
         try {
-            DeploymentBuilder lengaburuDeploymentBuilder = new DeploymentBuilder(
-                    Planets.LENGABURU.getPlanet().getTotalStrength(),
-                    Planets.FELICORNIA.getPlanet().buildUpDeployment(felicorniaDeploymentAsString),
-                    PlanetFelicornia.getInstance().getPowerFactor() / PlanetLengaburu.getInstance().getPowerFactor()
-            );
-            BattalionType.getBattalionsOnOrderOfStrength().forEach(battalionType -> battalionType.getStrategy().apply(lengaburuDeploymentBuilder));
-            return determinePossibleResult(lengaburuDeploymentBuilder);
+            Optional<Planet> attackingPlanet = Optional.of(felicorniaDeploymentAsString.split(EMPTY_STRING))
+                    .filter(strings -> strings.length > 0)
+                    .map(strings -> strings[0])
+                    .map(string -> string.split("_"))
+                    .filter(strings -> strings.length > 0)
+                    .map(strings -> strings[0])
+                    .map(Planets::valueOf)
+                    .map(Planets::getPlanet);
+            return attackingPlanet.isPresent()
+                    ? getPlanetLengaburuDeploymentAndResultForWar(attackingPlanet.get(), attackingPlanet.get().buildUpDeployment(felicorniaDeploymentAsString), Planets.LENGABURU.getPlanet())
+                    : "Attacking planet not found.";
         } catch (Exception exception) {
             return exception.getMessage();
         }
+    }
+
+    public String getPlanetLengaburuDeploymentAndResultForWar(Planet attackingPlanet, BattalionStrength deployment, Planet planetUnderAttack) {
+        DeploymentBuilder lengaburuDeploymentBuilder = new DeploymentBuilder(
+                planetUnderAttack.getTotalStrength(), deployment, attackingPlanet.getPowerFactor() / planetUnderAttack.getPowerFactor()
+        );
+        BattalionType.getBattalionsOnOrderOfStrength().forEach(battalionType -> battalionType.getStrategy().apply(lengaburuDeploymentBuilder));
+        return determinePossibleResult(attackingPlanet, lengaburuDeploymentBuilder, planetUnderAttack);
     }
 
     /**
@@ -41,9 +55,9 @@ public class WarController {
      *
      * @return Result of the war and Lengaburu deployment ex: [WINS/LOSES] NNH NNE NNAT NNSG
      */
-    private String determinePossibleResult(DeploymentBuilder lengaburuDeploymentBuilder) {
-        return ((lengaburuDeploymentBuilder.getDeployment().build().getTotalBattalionStrength() * PlanetLengaburu.getInstance().getPowerFactor()
-                >= lengaburuDeploymentBuilder.getTargetDeployment().build().getTotalBattalionStrength() * PlanetFelicornia.getInstance().getPowerFactor())
+    private String determinePossibleResult(Planet attackingPlanet, DeploymentBuilder lengaburuDeploymentBuilder, Planet planetUnderAttack) {
+        return ((lengaburuDeploymentBuilder.getDeployment().build().getTotalBattalionStrength() * planetUnderAttack.getPowerFactor()
+                >= lengaburuDeploymentBuilder.getTargetDeployment().build().getTotalBattalionStrength() * attackingPlanet.getPowerFactor())
                 ? WINS : LOSES
         ) + EMPTY_STRING + lengaburuDeploymentBuilder.getDeployment().build().toStringCustom();
     }

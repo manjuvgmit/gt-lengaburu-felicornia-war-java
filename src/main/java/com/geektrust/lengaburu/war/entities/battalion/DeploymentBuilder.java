@@ -7,7 +7,7 @@ public class DeploymentBuilder {
     private final BattalionStrength.Builder targetDeployment;
     private final BattalionStrength.Builder deployment;
 
-    public DeploymentBuilder(BattalionStrength lengaburuStrength, BattalionStrength felicorniaDeployment, double powerFactor) {
+    public DeploymentBuilder(BattalionStrength lengaburuStrength, BattalionStrength felicorniaDeployment, Double powerFactor) {
         this.lengaburuStrength = lengaburuStrength;
         this.targetDeployment = new BattalionStrength.Builder()
                 .withHorses(getFactoredValue(felicorniaDeployment.getHorses().getStrength(), powerFactor))
