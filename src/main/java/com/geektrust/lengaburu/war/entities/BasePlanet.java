@@ -1,50 +1,74 @@
 package com.geektrust.lengaburu.war.entities;
 
 import com.geektrust.lengaburu.war.entities.battalion.BattalionStrength;
+import com.geektrust.lengaburu.war.entities.battalion.BattalionType;
 
-public class BasePlanet {
+import static com.geektrust.lengaburu.war.utils.MiscUtils.getIntegerValue;
+
+public class BasePlanet implements Planet {
+    private static final String EMPTY_STRING = " ";
+    protected final String name;
     protected final BattalionStrength totalStrength;
-    protected BattalionStrength deployment;
-    protected Double factor;
+    protected final Double powerFactor;
 
-    public BasePlanet(BattalionStrength totalStrength, Double factor) {
+    public BasePlanet(String name, BattalionStrength totalStrength, Double powerFactor) {
+        this.name = name;
         this.totalStrength = totalStrength;
-        this.factor = factor;
+        this.powerFactor = powerFactor;
     }
 
-    public BasePlanet(int horses, int elephants, int armouredTanks, int slingGuns, double factor) {
-        this.totalStrength = new BattalionStrength(horses, elephants, armouredTanks, slingGuns);
-        this.factor = factor;
+    public BasePlanet(String name, int horses, int elephants, int armouredTanks, int slingGuns, double powerFactor) {
+        this(name, new BattalionStrength(horses, elephants, armouredTanks, slingGuns), powerFactor);
     }
 
+    @Override
     public BattalionStrength getTotalStrength() {
         return totalStrength;
     }
 
-    public BattalionStrength getDeployment() {
+    @Override
+    public Double getPowerFactor() {
+        return powerFactor;
+    }
+
+    @Override
+    public BattalionStrength buildUpDeployment(String deploymentAsString) throws Exception {
+        String[] parameters = deploymentAsString.split(EMPTY_STRING);
+        return buildUpDeployment(
+                getIntegerValue(parameters[1], BattalionType.HORSE.getShortName()),
+                getIntegerValue(parameters[2], BattalionType.ELEPHANT.getShortName()),
+                getIntegerValue(parameters[3], BattalionType.ARMOURED_TANK.getShortName()),
+                getIntegerValue(parameters[4], BattalionType.SLING_GUN.getShortName())
+        );
+    }
+
+    @Override
+    public BattalionStrength buildUpDeployment(int horses, int elephants, int armouredTanks, int slingGuns) throws Exception {
+        return validateDeploymentAndReturn(new BattalionStrength(horses, elephants, armouredTanks, slingGuns));
+    }
+
+    private BattalionStrength validateDeploymentAndReturn(BattalionStrength deployment) throws Exception {
+        if (deployment.getHorses().getStrength() > getTotalStrength().getHorses().getStrength()
+                || deployment.getElephants().getStrength() > getTotalStrength().getElephants().getStrength()
+                || deployment.getArmouredTanks().getStrength() > getTotalStrength().getArmouredTanks().getStrength()
+                || deployment.getSlingGuns().getStrength() > getTotalStrength().getSlingGuns().getStrength() ) {
+            throw new Exception(new StringBuilder()
+                    .append("Deployment exceeds capacity.")
+                    .append("Capacity: ")
+                    .append(getTotalStrength().toStringCustom())
+                    .append(", Deployment: ")
+                    .append(deployment.toStringCustom()).toString());
+        }
         return deployment;
     }
 
-    public Double getFactor() {
-        return factor;
-    }
-
-    public void buildUpDeployment(int horses, int elephants, int armouredTanks, int slingGuns) throws Exception {
-        this.deployment = new BattalionStrength(horses, elephants, armouredTanks, slingGuns);
-        validateDeployment();
-    }
-
-    public void setDeployment(BattalionStrength deployment) throws Exception {
-        this.deployment = deployment;
-        validateDeployment();
-    }
-
-    private void validateDeployment() throws Exception {
-        if (this.deployment.getHorses().getStrength() > this.getTotalStrength().getHorses().getStrength()
-                || this.deployment.getElephants().getStrength() > this.getTotalStrength().getElephants().getStrength()
-                || this.deployment.getArmouredTanks().getStrength() > this.getTotalStrength().getArmouredTanks().getStrength()
-                || this.deployment.getSlingGuns().getStrength() > this.getTotalStrength().getSlingGuns().getStrength() ) {
-            throw new Exception("Deployment exceeds capacity." + "Capacity: " + this.getTotalStrength().toStringCustom() + ", Deployment: " + this.deployment.toStringCustom());
-        }
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("BasePlanet{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", totalStrength=").append(totalStrength);
+        sb.append(", powerFactor=").append(powerFactor);
+        sb.append('}');
+        return sb.toString();
     }
 }

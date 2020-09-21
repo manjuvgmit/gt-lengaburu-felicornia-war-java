@@ -2,10 +2,9 @@ package com.geektrust.lengaburu.war;
 
 import com.geektrust.lengaburu.war.entities.PlanetFelicornia;
 import com.geektrust.lengaburu.war.entities.PlanetLengaburu;
+import com.geektrust.lengaburu.war.entities.Planets;
 import com.geektrust.lengaburu.war.entities.battalion.BattalionType;
 import com.geektrust.lengaburu.war.entities.battalion.DeploymentBuilder;
-
-import static com.geektrust.lengaburu.war.utils.MiscUtils.getIntegerValue;
 
 /***
  * This class orchestrate the war strategy, determines deployment and returns end result
@@ -26,13 +25,12 @@ public class WarController {
     public String getPlanetLengaburuDeploymentAndResult(String felicorniaDeploymentAsString) {
         try {
             DeploymentBuilder lengaburuDeploymentBuilder = new DeploymentBuilder(
-                    PlanetLengaburu.getInstance().getTotalStrength(),
-                    extractFelicorniaDeployment(felicorniaDeploymentAsString).getDeployment(),
-                    PlanetFelicornia.getInstance().getFactor() / PlanetLengaburu.getInstance().getFactor()
+                    Planets.LENGABURU.getPlanet().getTotalStrength(),
+                    Planets.FELICORNIA.getPlanet().buildUpDeployment(felicorniaDeploymentAsString),
+                    PlanetFelicornia.getInstance().getPowerFactor() / PlanetLengaburu.getInstance().getPowerFactor()
             );
             BattalionType.getBattalionsOnOrderOfStrength().forEach(battalionType -> battalionType.getStrategy().apply(lengaburuDeploymentBuilder));
-            PlanetLengaburu.getInstance().setDeployment(lengaburuDeploymentBuilder.getDeployment().build());
-            return determinePossibleResult();
+            return determinePossibleResult(lengaburuDeploymentBuilder);
         } catch (Exception exception) {
             return exception.getMessage();
         }
@@ -43,28 +41,11 @@ public class WarController {
      *
      * @return Result of the war and Lengaburu deployment ex: [WINS/LOSES] NNH NNE NNAT NNSG
      */
-    private String determinePossibleResult() {
-        return ((PlanetLengaburu.getInstance().getDeployment().getTotalBattalionStrength() * PlanetLengaburu.getInstance().getFactor()
-                >= PlanetFelicornia.getInstance().getDeployment().getTotalBattalionStrength())
+    private String determinePossibleResult(DeploymentBuilder lengaburuDeploymentBuilder) {
+        return ((lengaburuDeploymentBuilder.getDeployment().build().getTotalBattalionStrength() * PlanetLengaburu.getInstance().getPowerFactor()
+                >= lengaburuDeploymentBuilder.getTargetDeployment().build().getTotalBattalionStrength() * PlanetFelicornia.getInstance().getPowerFactor())
                 ? WINS : LOSES
-        ) + EMPTY_STRING + PlanetLengaburu.getInstance().getDeployment().toStringCustom();
+        ) + EMPTY_STRING + lengaburuDeploymentBuilder.getDeployment().build().toStringCustom();
     }
 
-    /**
-     * This method takes Felicornia deployment as string in the format given below and builds object model
-     *
-     * @param felicorniaDeploymentAsString Felicornia deployment in string ex: 'NNH NNE NNAT NNSG'
-     * @return PlanetFelicornia object model
-     */
-    private PlanetFelicornia extractFelicorniaDeployment(String felicorniaDeploymentAsString) throws Exception {
-        String[] parameters = felicorniaDeploymentAsString.split(EMPTY_STRING);
-        PlanetFelicornia felicornia = PlanetFelicornia.getInstance();
-        felicornia.buildUpDeployment(
-                getIntegerValue(parameters[1], BattalionType.HORSE.getShortName()),
-                getIntegerValue(parameters[2], BattalionType.ELEPHANT.getShortName()),
-                getIntegerValue(parameters[3], BattalionType.ARMOURED_TANK.getShortName()),
-                getIntegerValue(parameters[4], BattalionType.SLING_GUN.getShortName())
-        );
-        return felicornia;
-    }
 }

@@ -6,9 +6,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/***
+ * This is enumeration for different battalions of forces available for the war.
+ * This enumeration also encapsulates each force, its strength against other type and strategy which will be
+ * employed in deploying them against same type of against adjacent type of force during excess or shortage scenario.
+ */
 public enum BattalionType {
     HORSE("H", (int)Math.pow(2, 1), new HorseBattalionStrategy()),
     ELEPHANT("E",(int)Math.pow(2, 2), new ElephantBattalionStrategy()),
@@ -35,20 +39,6 @@ public enum BattalionType {
 
     public BaseStrategy getStrategy() {
         return strategy;
-    }
-
-    public Set<BattalionType> getLowerBattalions() {
-        return getBattalions(e -> e.orderOfStrength < this.orderOfStrength);
-    }
-
-    public Set<BattalionType> getHigherBattalions() {
-        return getBattalions(e -> e.orderOfStrength > this.orderOfStrength);
-    }
-
-    public Set<BattalionType> getBattalions(Predicate<BattalionType> predicate) {
-        return Arrays.stream(values())
-                .filter(predicate)
-                .collect(Collectors.toSet());
     }
 
     public static Set<BattalionType> getBattalionsOnOrderOfStrength() {

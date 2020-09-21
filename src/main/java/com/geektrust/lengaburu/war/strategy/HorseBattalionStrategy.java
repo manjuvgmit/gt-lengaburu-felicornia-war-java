@@ -27,7 +27,6 @@ public class HorseBattalionStrategy extends BaseStrategy {
     @Override
     protected void updateDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
         deploymentBuilder.getDeployment().withHorses(deploymentBuilder.getDeployment().getHorses() + deploymentStrength);
-//        deploymentBuilder.getTargetDeployment().withHorses(deploymentBuilder.getTargetDeployment().getHorses() - deploymentStrength);
     }
 
     @Override
