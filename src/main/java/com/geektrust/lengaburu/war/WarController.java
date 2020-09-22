@@ -4,7 +4,6 @@ import com.geektrust.lengaburu.war.entities.Planet;
 import com.geektrust.lengaburu.war.entities.Planets;
 import com.geektrust.lengaburu.war.entities.battalion.BattalionStrength;
 import com.geektrust.lengaburu.war.entities.battalion.BattalionType;
-import com.geektrust.lengaburu.war.entities.battalion.DeploymentBuilder;
 
 import java.util.Optional;
 
@@ -56,8 +55,8 @@ public class WarController {
      * @return Result of the war and Lengaburu deployment ex: [WINS/LOSES] NNH NNE NNAT NNSG
      */
     private String determinePossibleResult(Planet attackingPlanet, DeploymentBuilder lengaburuDeploymentBuilder, Planet planetUnderAttack) {
-        return ((lengaburuDeploymentBuilder.getDeployment().build().getTotalBattalionStrength() * planetUnderAttack.getPowerFactor()
-                >= lengaburuDeploymentBuilder.getTargetDeployment().build().getTotalBattalionStrength() * attackingPlanet.getPowerFactor())
+        return ((lengaburuDeploymentBuilder.getDeployment().build().getTotalBattalionStrength()
+                >= lengaburuDeploymentBuilder.getTargetDeployment().getTotalBattalionStrength())
                 ? WINS : LOSES
         ) + EMPTY_STRING + lengaburuDeploymentBuilder.getDeployment().build().toStringCustom();
     }

@@ -1,27 +1,28 @@
 package com.geektrust.lengaburu.war.strategy;
 
-import com.geektrust.lengaburu.war.entities.battalion.DeploymentBuilder;
+import com.geektrust.lengaburu.war.DeploymentBuilder;
+import com.geektrust.lengaburu.war.entities.battalion.Battalion;
 
 public class ArmouredTankBattalionStrategy extends BaseStrategy {
 
     @Override
-    protected int getFelicorniaDeployment(DeploymentBuilder deploymentBuilder) {
+    protected Battalion getFelicorniaDeployment(DeploymentBuilder deploymentBuilder) {
         return deploymentBuilder.getTargetDeployment().getArmouredTanks();
     }
 
     @Override
-    protected int getLengaburuCapacity(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getLengaburuStrength().getArmouredTanks().getStrength();
+    protected Battalion getLengaburuCapacity(DeploymentBuilder deploymentBuilder) {
+        return deploymentBuilder.getLengaburuStrength().getArmouredTanks();
     }
 
     @Override
-    protected int getFelicorniaLowerDeployment(DeploymentBuilder deploymentBuilder) {
+    protected Battalion getFelicorniaLowerDeployment(DeploymentBuilder deploymentBuilder) {
         return deploymentBuilder.getTargetDeployment().getElephants();
     }
 
     @Override
-    protected int getLengaburuLowerCapacity(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getLengaburuStrength().getElephants().getStrength();
+    protected Battalion getLengaburuLowerCapacity(DeploymentBuilder deploymentBuilder) {
+        return deploymentBuilder.getLengaburuStrength().getElephants();
     }
 
     @Override

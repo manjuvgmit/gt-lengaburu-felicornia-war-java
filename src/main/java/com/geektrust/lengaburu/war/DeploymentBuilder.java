@@ -1,10 +1,12 @@
-package com.geektrust.lengaburu.war.entities.battalion;
+package com.geektrust.lengaburu.war;
+
+import com.geektrust.lengaburu.war.entities.battalion.BattalionStrength;
 
 import static com.geektrust.lengaburu.war.utils.MiscUtils.getFactoredValue;
 
 public class DeploymentBuilder {
     private final BattalionStrength lengaburuStrength;
-    private final BattalionStrength.Builder targetDeployment;
+    private final BattalionStrength targetDeployment;
     private final BattalionStrength.Builder deployment;
 
     public DeploymentBuilder(BattalionStrength lengaburuStrength, BattalionStrength felicorniaDeployment, Double powerFactor) {
@@ -13,7 +15,8 @@ public class DeploymentBuilder {
                 .withHorses(getFactoredValue(felicorniaDeployment.getHorses().getStrength(), powerFactor))
                 .withElephants(getFactoredValue(felicorniaDeployment.getElephants().getStrength(), powerFactor))
                 .withArmouredTanks(getFactoredValue(felicorniaDeployment.getArmouredTanks().getStrength(), powerFactor))
-                .withSlingGuns(getFactoredValue(felicorniaDeployment.getSlingGuns().getStrength(), powerFactor));
+                .withSlingGuns(getFactoredValue(felicorniaDeployment.getSlingGuns().getStrength(), powerFactor))
+                .build();
         this.deployment = new BattalionStrength.Builder();
     }
 
@@ -21,7 +24,7 @@ public class DeploymentBuilder {
         return lengaburuStrength;
     }
 
-    public BattalionStrength.Builder getTargetDeployment() {
+    public BattalionStrength getTargetDeployment() {
         return targetDeployment;
     }
 

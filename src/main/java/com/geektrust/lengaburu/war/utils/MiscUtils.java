@@ -1,5 +1,7 @@
 package com.geektrust.lengaburu.war.utils;
 
+import com.geektrust.lengaburu.war.entities.battalion.Battalion;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,6 +19,10 @@ public final class MiscUtils {
 
     public static Integer getFactoredValue(Integer strength, Double powerFactor) {
         return (int) Math.round(strength * powerFactor);
+    }
+
+    public static Integer getValueOrDefault(Battalion battalion) {
+        return battalion != null ? battalion.getStrength() : 0;
     }
 
 }

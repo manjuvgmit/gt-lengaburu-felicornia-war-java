@@ -1,27 +1,28 @@
 package com.geektrust.lengaburu.war.strategy;
 
-import com.geektrust.lengaburu.war.entities.battalion.DeploymentBuilder;
+import com.geektrust.lengaburu.war.DeploymentBuilder;
+import com.geektrust.lengaburu.war.entities.battalion.Battalion;
 
 public class HorseBattalionStrategy extends BaseStrategy {
 
     @Override
-    protected int getFelicorniaDeployment(DeploymentBuilder deploymentBuilder) {
+    protected Battalion getFelicorniaDeployment(DeploymentBuilder deploymentBuilder) {
         return deploymentBuilder.getTargetDeployment().getHorses();
     }
 
     @Override
-    protected int getLengaburuCapacity(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getLengaburuStrength().getHorses().getStrength();
+    protected Battalion getLengaburuCapacity(DeploymentBuilder deploymentBuilder) {
+        return deploymentBuilder.getLengaburuStrength().getHorses();
     }
 
     @Override
-    protected int getFelicorniaLowerDeployment(DeploymentBuilder deploymentBuilder) {
-        return 0;
+    protected Battalion getFelicorniaLowerDeployment(DeploymentBuilder deploymentBuilder) {
+        return null;
     }
 
     @Override
-    protected int getLengaburuLowerCapacity(DeploymentBuilder deploymentBuilder) {
-        return 0;
+    protected Battalion getLengaburuLowerCapacity(DeploymentBuilder deploymentBuilder) {
+        return null;
     }
 
     @Override
