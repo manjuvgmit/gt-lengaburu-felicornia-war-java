@@ -12,32 +12,32 @@ public class AppTest {
 
     @Test
     public void test01() {
-        assertEquals("WINS 52H 50E 10AT 3SG", invokeApp("FELICORNIA_ATTACK 100H 101E 20AT 5SG"));
+        assertEquals("WINS 52H 50E 10AT 3SG", invokeApp("FALICORNIA_ATTACK 100H 101E 20AT 5SG"));
     }
 
     @Test
     public void test02() {
-        assertEquals("WINS 75H 50E 10AT 5SG", invokeApp("FELICORNIA_ATTACK 150H 96E 26AT 8SG"));
+        assertEquals("WINS 75H 50E 10AT 5SG", invokeApp("FALICORNIA_ATTACK 150H 96E 26AT 8SG"));
     }
 
     @Test
     public void test03() {
-        assertEquals("LOSES 100H 38E 10AT 5SG", invokeApp("FELICORNIA_ATTACK 250H 50E 20AT 15SG"));
+        assertEquals("LOSES 100H 38E 10AT 5SG", invokeApp("FALICORNIA_ATTACK 250H 50E 20AT 15SG"));
     }
 
     @Test
     public void test04() {
-        assertEquals("WINS 50H 28E 5AT 3SG", invokeApp("FELICORNIA_ATTACK 99H 55E 10AT 5SG"));
+        assertEquals("WINS 50H 28E 5AT 3SG", invokeApp("FALICORNIA_ATTACK 99H 55E 10AT 5SG"));
     }
 
     @Test
     public void test05() {
-        assertEquals("WINS 100H 18E 3AT 3SG", invokeApp("FELICORNIA_ATTACK 250H 10E 5AT 5SG"));
+        assertEquals("WINS 100H 18E 3AT 3SG", invokeApp("FALICORNIA_ATTACK 250H 10E 5AT 5SG"));
     }
 
     @Test
     public void test06() {
-        assertEquals("LOSES 100H 50E 10AT 5SG", invokeApp("FELICORNIA_ATTACK 200H 100E 30AT 10SG"));
+        assertEquals("LOSES 100H 50E 10AT 5SG", invokeApp("FALICORNIA_ATTACK 200H 100E 30AT 10SG"));
     }
 
     private String invokeApp(String command) {

@@ -24,7 +24,7 @@ public class App {
         App app = new App();
         if (args.length == 1) {
             System.out.println(String.join("\n", app.processInputFromFile(args[0])));
-        } else if (args.length == 3) {
+        } else if (args.length == 5) {
             System.out.println(app.processInputFromCli(args));
         } else {
             System.out.println("Invalid Parameters.");
