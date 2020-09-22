@@ -32,3 +32,21 @@ application {
     // Define the main class for the application.
     mainClassName = 'com.geektrust.lengaburu.war.App'
 }
+
+jar {
+    archiveBaseName = 'geektrust'
+    archiveVersion = null
+    version = null
+
+    manifest {
+        attributes 'Main-Class': 'com.geektrust.lengaburu.war.App'
+    }
+    // To create a single jar with all dependencies.
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+}

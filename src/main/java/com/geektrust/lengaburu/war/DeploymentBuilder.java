@@ -4,6 +4,9 @@ import com.geektrust.lengaburu.war.entities.battalion.BattalionStrength;
 
 import static com.geektrust.lengaburu.war.utils.MiscUtils.getFactoredValue;
 
+/**
+ * This class is a placeholder for deployment of enemy and possible deployment fo lengaburu to match the enemy.
+ */
 public class DeploymentBuilder {
     private final BattalionStrength lengaburuStrength;
     private final BattalionStrength targetDeployment;

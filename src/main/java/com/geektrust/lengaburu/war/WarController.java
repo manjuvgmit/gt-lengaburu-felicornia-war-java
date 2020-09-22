@@ -25,14 +25,7 @@ public class WarController {
      */
     public String getPlanetLengaburuDeploymentAndResultForWar(String felicorniaDeploymentAsString) {
         try {
-            Optional<Planet> attackingPlanet = Optional.of(felicorniaDeploymentAsString.split(EMPTY_STRING))
-                    .filter(strings -> strings.length > 0)
-                    .map(strings -> strings[0])
-                    .map(string -> string.split("_"))
-                    .filter(strings -> strings.length > 0)
-                    .map(strings -> strings[0])
-                    .map(Planets::valueOf)
-                    .map(Planets::getPlanet);
+            Optional<Planet> attackingPlanet = getAttackingPlanet(felicorniaDeploymentAsString);
             return attackingPlanet.isPresent()
                     ? getPlanetLengaburuDeploymentAndResultForWar(attackingPlanet.get(), attackingPlanet.get().buildUpDeployment(felicorniaDeploymentAsString), Planets.LENGABURU.getPlanet())
                     : "Attacking planet not found.";
@@ -41,6 +34,15 @@ public class WarController {
         }
     }
 
+    /**
+     * This method takes input given from CLI which is Felicornia deployment in the format given below, parses it, determines lengaburu
+     * deployment based on Felicornia deployment and decides the result of the war.
+     *
+     * @param attackingPlanet   Planet : attacking planet
+     * @param deployment        BattalionStrength : enemy deployment
+     * @param planetUnderAttack Planet : planet under attack
+     * @return Result of the war and Lengaburu deployment ex: [WINS/LOSES] NNH NNE NNAT NNSG
+     */
     public String getPlanetLengaburuDeploymentAndResultForWar(Planet attackingPlanet, BattalionStrength deployment, Planet planetUnderAttack) {
         DeploymentBuilder lengaburuDeploymentBuilder = new DeploymentBuilder(
                 planetUnderAttack.getTotalStrength(), deployment, attackingPlanet.getPowerFactor() / planetUnderAttack.getPowerFactor()
@@ -55,10 +57,25 @@ public class WarController {
      * @return Result of the war and Lengaburu deployment ex: [WINS/LOSES] NNH NNE NNAT NNSG
      */
     private String determinePossibleResult(Planet attackingPlanet, DeploymentBuilder lengaburuDeploymentBuilder, Planet planetUnderAttack) {
-        return ((lengaburuDeploymentBuilder.getDeployment().build().getTotalBattalionStrength()
-                >= lengaburuDeploymentBuilder.getTargetDeployment().getTotalBattalionStrength())
-                ? WINS : LOSES
+        return (lengaburuDeploymentBuilder.getDeployment().build().getTotalBattalionStrength() >= lengaburuDeploymentBuilder.getTargetDeployment().getTotalBattalionStrength()
+                ? WINS
+                : LOSES
         ) + EMPTY_STRING + lengaburuDeploymentBuilder.getDeployment().build().toStringCustom();
     }
 
+    /**
+     * This method extracts attacking planet on Lengaburu
+     * @param felicorniaDeploymentAsString
+     * @return
+     */
+    private Optional<Planet> getAttackingPlanet(String felicorniaDeploymentAsString) {
+        return Optional.of(felicorniaDeploymentAsString.split(EMPTY_STRING))
+                .filter(strings -> strings.length > 0)
+                .map(strings -> strings[0])
+                .map(string -> string.split("_"))
+                .filter(strings -> strings.length > 0)
+                .map(strings -> strings[0])
+                .map(Planets::valueOf)
+                .map(Planets::getPlanet);
+    }
 }

@@ -3,8 +3,15 @@ package com.geektrust.lengaburu.war.strategy;
 import com.geektrust.lengaburu.war.DeploymentBuilder;
 import com.geektrust.lengaburu.war.entities.battalion.Battalion;
 
+import java.util.Objects;
+
 import static com.geektrust.lengaburu.war.utils.MiscUtils.getValueOrDefault;
 
+/**
+ * This is base class of all deployment strategies to match the enemy deployment.
+ * This covers some of the common stuff and depends on some of concrete methods from each of the battalion
+ * to orchestrate the deployment strategy.
+ */
 public abstract class BaseStrategy {
 
     public void apply(DeploymentBuilder deploymentBuilder) {
@@ -12,28 +19,29 @@ public abstract class BaseStrategy {
         Battalion felicorniaLowerBattalionDeployment = getFelicorniaLowerDeployment(deploymentBuilder);
         Battalion lengaburuBattalionCapacity = getLengaburuCapacity(deploymentBuilder);
         Battalion lengaburuLowerBattalionCapacity = getLengaburuLowerCapacity(deploymentBuilder);
+        int battalionPowerFactor = Objects.nonNull(lengaburuLowerBattalionCapacity) ? lengaburuBattalionCapacity.getType().getOrderOfStrength() / lengaburuLowerBattalionCapacity.getType().getOrderOfStrength() : 1;
         if (lengaburuBattalionCapacity.getStrength() >= felicorniaBattalionDeployment.getStrength()) {
-            handleExcessStrengthScenario(deploymentBuilder, felicorniaBattalionDeployment, felicorniaLowerBattalionDeployment, lengaburuBattalionCapacity, lengaburuLowerBattalionCapacity);
+            handleExcessCapacityScenario(deploymentBuilder, felicorniaBattalionDeployment, felicorniaLowerBattalionDeployment, lengaburuBattalionCapacity, lengaburuLowerBattalionCapacity, battalionPowerFactor);
         } else {
-            handleShortageStrengthScenario(deploymentBuilder, felicorniaBattalionDeployment, felicorniaLowerBattalionDeployment, lengaburuBattalionCapacity, lengaburuLowerBattalionCapacity);
+            handleShortageCapacityScenario(deploymentBuilder, felicorniaBattalionDeployment, felicorniaLowerBattalionDeployment, lengaburuBattalionCapacity, lengaburuLowerBattalionCapacity, battalionPowerFactor);
         }
     }
 
-    private void handleShortageStrengthScenario(DeploymentBuilder deploymentBuilder, Battalion felicorniaBattalionDeployment, Battalion felicorniaLowerBattalionDeployment, Battalion lengaburuBattalionCapacity, Battalion lengaburuLowerBattalionCapacity) {
+    private void handleShortageCapacityScenario(DeploymentBuilder deploymentBuilder, Battalion felicorniaBattalionDeployment, Battalion felicorniaLowerBattalionDeployment, Battalion lengaburuBattalionCapacity, Battalion lengaburuLowerBattalionCapacity, int battalionPowerFactor) {
         updateDeployment(deploymentBuilder, lengaburuBattalionCapacity.getStrength());
         int lowerBattalionExcess = getValueOrDefault(lengaburuLowerBattalionCapacity) - getValueOrDefault(felicorniaLowerBattalionDeployment);
         if (lowerBattalionExcess > 0) {
             int currentBattalionShortage = getValueOrDefault(felicorniaBattalionDeployment) - getValueOrDefault(lengaburuBattalionCapacity);
-            updateLowerDeployment(deploymentBuilder, (int)Math.round(Math.min(currentBattalionShortage * 2.0, lowerBattalionExcess)));
+            updateLowerDeployment(deploymentBuilder, Math.min(currentBattalionShortage * battalionPowerFactor, lowerBattalionExcess));
         }
     }
 
-    private void handleExcessStrengthScenario(DeploymentBuilder deploymentBuilder, Battalion felicorniaBattalionDeployment, Battalion felicorniaLowerBattalionDeployment, Battalion lengaburuBattalionCapacity, Battalion lengaburuLowerBattalionCapacity) {
+    private void handleExcessCapacityScenario(DeploymentBuilder deploymentBuilder, Battalion felicorniaBattalionDeployment, Battalion felicorniaLowerBattalionDeployment, Battalion lengaburuBattalionCapacity, Battalion lengaburuLowerBattalionCapacity, int battalionPowerFactor) {
         updateDeployment(deploymentBuilder, felicorniaBattalionDeployment.getStrength());
         int lowerBattalionShortage = getValueOrDefault(felicorniaLowerBattalionDeployment) - getValueOrDefault(lengaburuLowerBattalionCapacity);
         if (lowerBattalionShortage > 0) {
             int currentBattalionExcess = getValueOrDefault(lengaburuBattalionCapacity) - getValueOrDefault(felicorniaBattalionDeployment);
-            updateDeployment(deploymentBuilder, (int)Math.round(Math.min(currentBattalionExcess, lowerBattalionShortage/2.0)));
+            updateDeployment(deploymentBuilder, Math.min(currentBattalionExcess, lowerBattalionShortage / battalionPowerFactor));
         }
     }
 

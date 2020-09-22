@@ -5,6 +5,9 @@ import com.geektrust.lengaburu.war.entities.battalion.BattalionType;
 
 import static com.geektrust.lengaburu.war.utils.MiscUtils.getIntegerValue;
 
+/**
+ * Base implementation of Planet covering common attributes and functionalities.
+ */
 public class BasePlanet implements Planet {
     private static final String EMPTY_STRING = " ";
     protected final String name;
