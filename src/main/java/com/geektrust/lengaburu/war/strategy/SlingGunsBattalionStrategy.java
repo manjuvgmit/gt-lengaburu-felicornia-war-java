@@ -7,31 +7,31 @@ public class SlingGunsBattalionStrategy extends BaseStrategy {
 
     @Override
     protected Battalion getAttackerDeployment(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getTargetDeployment().getSlingGuns();
+        return deploymentBuilder.getAttackerDeployment().getSlingGuns();
     }
 
     @Override
     protected Battalion getDefenderCapacity(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getLengaburuStrength().getSlingGuns();
+        return deploymentBuilder.getDefenderStrength().getSlingGuns();
     }
 
     @Override
     protected Battalion getAttackerLowerDeployment(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getTargetDeployment().getArmouredTanks();
+        return deploymentBuilder.getAttackerDeployment().getArmouredTanks();
     }
 
     @Override
     protected Battalion getDefenderLowerCapacity(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getLengaburuStrength().getArmouredTanks();
+        return deploymentBuilder.getDefenderStrength().getArmouredTanks();
     }
 
     @Override
     protected void updateDefenderDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
-        deploymentBuilder.getDeployment().withSlingGuns(deploymentBuilder.getDeployment().getSlingGuns() + deploymentStrength);
+        deploymentBuilder.getDefenderDeployment().withSlingGuns(deploymentBuilder.getDefenderDeployment().getSlingGuns() + deploymentStrength);
     }
 
     @Override
     protected void updateDefenderLowerDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
-        deploymentBuilder.getDeployment().withArmouredTanks(deploymentBuilder.getDeployment().getArmouredTanks() + deploymentStrength);
+        deploymentBuilder.getDefenderDeployment().withArmouredTanks(deploymentBuilder.getDefenderDeployment().getArmouredTanks() + deploymentStrength);
     }
 }

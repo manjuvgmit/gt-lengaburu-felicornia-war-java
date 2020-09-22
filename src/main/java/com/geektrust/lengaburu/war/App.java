@@ -3,6 +3,7 @@
  */
 package com.geektrust.lengaburu.war;
 
+import com.geektrust.lengaburu.war.entities.Planets;
 import com.geektrust.lengaburu.war.utils.MiscUtils;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class App {
      * @return output from the program
      */
     public String processInputFromCli(String[] args) {
-        return getController().getPlanetLengaburuDeploymentAndResultForWar(String.join(" ", args));
+        return getPlanetLengaburuDeploymentAndResultForWar(String.join(" ", args));
     }
 
     private WarController getController() {
@@ -51,7 +52,11 @@ public class App {
      */
     public List<String> processInputFromFile(String arg) throws IOException {
         return MiscUtils.getInputFromFile(arg).stream()
-                .map(commands -> getController().getPlanetLengaburuDeploymentAndResultForWar(commands))
+                .map(commands -> getPlanetLengaburuDeploymentAndResultForWar(commands))
                 .collect(Collectors.toList());
+    }
+
+    private String getPlanetLengaburuDeploymentAndResultForWar(String command) {
+        return getController().getDefenderDeploymentAndResultForWar(command, Planets.LENGABURU.getPlanet());
     }
 }

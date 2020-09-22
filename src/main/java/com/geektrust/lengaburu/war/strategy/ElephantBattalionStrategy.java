@@ -7,31 +7,31 @@ public class ElephantBattalionStrategy extends BaseStrategy {
 
     @Override
     protected Battalion getAttackerDeployment(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getTargetDeployment().getElephants();
+        return deploymentBuilder.getAttackerDeployment().getElephants();
     }
 
     @Override
     protected Battalion getDefenderCapacity(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getLengaburuStrength().getElephants();
+        return deploymentBuilder.getDefenderStrength().getElephants();
     }
 
     @Override
     protected Battalion getAttackerLowerDeployment(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getTargetDeployment().getHorses();
+        return deploymentBuilder.getAttackerDeployment().getHorses();
     }
 
     @Override
     protected Battalion getDefenderLowerCapacity(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getLengaburuStrength().getHorses();
+        return deploymentBuilder.getDefenderStrength().getHorses();
     }
 
     @Override
     protected void updateDefenderDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
-        deploymentBuilder.getDeployment().withElephants(deploymentBuilder.getDeployment().getElephants() + deploymentStrength);
+        deploymentBuilder.getDefenderDeployment().withElephants(deploymentBuilder.getDefenderDeployment().getElephants() + deploymentStrength);
     }
 
     @Override
     protected void updateDefenderLowerDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
-        deploymentBuilder.getDeployment().withHorses(deploymentBuilder.getDeployment().getHorses() + deploymentStrength);
+        deploymentBuilder.getDefenderDeployment().withHorses(deploymentBuilder.getDefenderDeployment().getHorses() + deploymentStrength);
     }
 }

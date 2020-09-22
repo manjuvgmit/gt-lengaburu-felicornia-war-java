@@ -7,31 +7,31 @@ public class ArmouredTankBattalionStrategy extends BaseStrategy {
 
     @Override
     protected Battalion getAttackerDeployment(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getTargetDeployment().getArmouredTanks();
+        return deploymentBuilder.getAttackerDeployment().getArmouredTanks();
     }
 
     @Override
     protected Battalion getDefenderCapacity(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getLengaburuStrength().getArmouredTanks();
+        return deploymentBuilder.getDefenderStrength().getArmouredTanks();
     }
 
     @Override
     protected Battalion getAttackerLowerDeployment(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getTargetDeployment().getElephants();
+        return deploymentBuilder.getAttackerDeployment().getElephants();
     }
 
     @Override
     protected Battalion getDefenderLowerCapacity(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getLengaburuStrength().getElephants();
+        return deploymentBuilder.getDefenderStrength().getElephants();
     }
 
     @Override
     protected void updateDefenderDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
-        deploymentBuilder.getDeployment().withArmouredTanks(deploymentBuilder.getDeployment().getArmouredTanks() + deploymentStrength);
+        deploymentBuilder.getDefenderDeployment().withArmouredTanks(deploymentBuilder.getDefenderDeployment().getArmouredTanks() + deploymentStrength);
     }
 
     @Override
     protected void updateDefenderLowerDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
-        deploymentBuilder.getDeployment().withElephants(deploymentBuilder.getDeployment().getElephants() + deploymentStrength);
+        deploymentBuilder.getDefenderDeployment().withElephants(deploymentBuilder.getDefenderDeployment().getElephants() + deploymentStrength);
     }
 }

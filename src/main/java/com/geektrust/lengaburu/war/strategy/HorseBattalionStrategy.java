@@ -7,12 +7,12 @@ public class HorseBattalionStrategy extends BaseStrategy {
 
     @Override
     protected Battalion getAttackerDeployment(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getTargetDeployment().getHorses();
+        return deploymentBuilder.getAttackerDeployment().getHorses();
     }
 
     @Override
     protected Battalion getDefenderCapacity(DeploymentBuilder deploymentBuilder) {
-        return deploymentBuilder.getLengaburuStrength().getHorses();
+        return deploymentBuilder.getDefenderStrength().getHorses();
     }
 
     @Override
@@ -27,7 +27,7 @@ public class HorseBattalionStrategy extends BaseStrategy {
 
     @Override
     protected void updateDefenderDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength) {
-        deploymentBuilder.getDeployment().withHorses(deploymentBuilder.getDeployment().getHorses() + deploymentStrength);
+        deploymentBuilder.getDefenderDeployment().withHorses(deploymentBuilder.getDefenderDeployment().getHorses() + deploymentStrength);
     }
 
     @Override
