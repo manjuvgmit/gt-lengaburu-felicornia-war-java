@@ -3,7 +3,7 @@
  */
 package com.geektrust.lengaburu.war;
 
-import com.geektrust.lengaburu.war.entities.Planets;
+import com.geektrust.lengaburu.war.entities.planet.Planets;
 import com.geektrust.lengaburu.war.utils.MiscUtils;
 
 import java.io.IOException;

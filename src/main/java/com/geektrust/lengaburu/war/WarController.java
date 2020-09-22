@@ -1,7 +1,7 @@
 package com.geektrust.lengaburu.war;
 
-import com.geektrust.lengaburu.war.entities.Planet;
-import com.geektrust.lengaburu.war.entities.Planets;
+import com.geektrust.lengaburu.war.entities.planet.Planet;
+import com.geektrust.lengaburu.war.entities.planet.Planets;
 import com.geektrust.lengaburu.war.entities.battalion.BattalionStrength;
 import com.geektrust.lengaburu.war.entities.battalion.BattalionType;
 

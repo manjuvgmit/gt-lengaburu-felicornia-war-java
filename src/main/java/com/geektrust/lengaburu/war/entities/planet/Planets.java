@@ -1,4 +1,4 @@
-package com.geektrust.lengaburu.war.entities;
+package com.geektrust.lengaburu.war.entities.planet;
 
 /**
  * Enumeration defining all the planets existing int he lengaburu world.
