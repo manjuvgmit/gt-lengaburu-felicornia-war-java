@@ -15,47 +15,47 @@ import static com.geektrust.lengaburu.war.utils.MiscUtils.getValueOrDefault;
 public abstract class BaseStrategy {
 
     public void apply(DeploymentBuilder deploymentBuilder) {
-        Battalion felicorniaBattalionDeployment = getFelicorniaDeployment(deploymentBuilder);
-        Battalion felicorniaLowerBattalionDeployment = getFelicorniaLowerDeployment(deploymentBuilder);
-        Battalion lengaburuBattalionCapacity = getLengaburuCapacity(deploymentBuilder);
-        Battalion lengaburuLowerBattalionCapacity = getLengaburuLowerCapacity(deploymentBuilder);
-        int battalionPowerFactor = Objects.nonNull(lengaburuLowerBattalionCapacity) ? lengaburuBattalionCapacity.getType().getOrderOfStrength() / lengaburuLowerBattalionCapacity.getType().getOrderOfStrength() : 1;
-        if (lengaburuBattalionCapacity.getStrength() >= felicorniaBattalionDeployment.getStrength()) {
-            handleExcessCapacityScenario(deploymentBuilder, felicorniaBattalionDeployment, felicorniaLowerBattalionDeployment, lengaburuBattalionCapacity, lengaburuLowerBattalionCapacity, battalionPowerFactor);
+        Battalion attackerBattalionDeployment = getAttackerDeployment(deploymentBuilder);
+        Battalion attackerLowerBattalionDeployment = getAttackerLowerDeployment(deploymentBuilder);
+        Battalion defenderBattalionCapacity = getDefenderCapacity(deploymentBuilder);
+        Battalion defenderLowerBattalionCapacity = getDefenderLowerCapacity(deploymentBuilder);
+        int battalionPowerFactor = Objects.nonNull(defenderLowerBattalionCapacity) ? defenderBattalionCapacity.getType().getOrderOfStrength() / defenderLowerBattalionCapacity.getType().getOrderOfStrength() : 1;
+        if (defenderBattalionCapacity.getStrength() >= attackerBattalionDeployment.getStrength()) {
+            handleExcessCapacityScenario(deploymentBuilder, attackerBattalionDeployment, attackerLowerBattalionDeployment, defenderBattalionCapacity, defenderLowerBattalionCapacity, battalionPowerFactor);
         } else {
-            handleShortageCapacityScenario(deploymentBuilder, felicorniaBattalionDeployment, felicorniaLowerBattalionDeployment, lengaburuBattalionCapacity, lengaburuLowerBattalionCapacity, battalionPowerFactor);
+            handleShortageCapacityScenario(deploymentBuilder, attackerBattalionDeployment, attackerLowerBattalionDeployment, defenderBattalionCapacity, defenderLowerBattalionCapacity, battalionPowerFactor);
         }
     }
 
     private void handleShortageCapacityScenario(DeploymentBuilder deploymentBuilder, Battalion felicorniaBattalionDeployment, Battalion felicorniaLowerBattalionDeployment, Battalion lengaburuBattalionCapacity, Battalion lengaburuLowerBattalionCapacity, int battalionPowerFactor) {
-        updateDeployment(deploymentBuilder, lengaburuBattalionCapacity.getStrength());
+        updateDefenderDeployment(deploymentBuilder, lengaburuBattalionCapacity.getStrength());
         int lowerBattalionExcess = getValueOrDefault(lengaburuLowerBattalionCapacity) - getValueOrDefault(felicorniaLowerBattalionDeployment);
         if (lowerBattalionExcess > 0) {
             int currentBattalionShortage = getValueOrDefault(felicorniaBattalionDeployment) - getValueOrDefault(lengaburuBattalionCapacity);
-            updateLowerDeployment(deploymentBuilder, Math.min(currentBattalionShortage * battalionPowerFactor, lowerBattalionExcess));
+            updateDefenderLowerDeployment(deploymentBuilder, Math.min(currentBattalionShortage * battalionPowerFactor, lowerBattalionExcess));
         }
     }
 
     private void handleExcessCapacityScenario(DeploymentBuilder deploymentBuilder, Battalion felicorniaBattalionDeployment, Battalion felicorniaLowerBattalionDeployment, Battalion lengaburuBattalionCapacity, Battalion lengaburuLowerBattalionCapacity, int battalionPowerFactor) {
-        updateDeployment(deploymentBuilder, felicorniaBattalionDeployment.getStrength());
+        updateDefenderDeployment(deploymentBuilder, felicorniaBattalionDeployment.getStrength());
         int lowerBattalionShortage = getValueOrDefault(felicorniaLowerBattalionDeployment) - getValueOrDefault(lengaburuLowerBattalionCapacity);
         if (lowerBattalionShortage > 0) {
             int currentBattalionExcess = getValueOrDefault(lengaburuBattalionCapacity) - getValueOrDefault(felicorniaBattalionDeployment);
-            updateDeployment(deploymentBuilder, Math.min(currentBattalionExcess, lowerBattalionShortage / battalionPowerFactor));
+            updateDefenderDeployment(deploymentBuilder, Math.min(currentBattalionExcess, (int)Math.round(1.0 * lowerBattalionShortage / battalionPowerFactor)));
         }
     }
 
-    abstract protected Battalion getFelicorniaDeployment(DeploymentBuilder deploymentBuilder);
+    abstract protected Battalion getAttackerDeployment(DeploymentBuilder deploymentBuilder);
 
-    abstract protected Battalion getLengaburuCapacity(DeploymentBuilder deploymentBuilder);
+    abstract protected Battalion getDefenderCapacity(DeploymentBuilder deploymentBuilder);
 
-    abstract protected Battalion getFelicorniaLowerDeployment(DeploymentBuilder deploymentBuilder);
+    abstract protected Battalion getAttackerLowerDeployment(DeploymentBuilder deploymentBuilder);
 
-    abstract protected Battalion getLengaburuLowerCapacity(DeploymentBuilder deploymentBuilder);
+    abstract protected Battalion getDefenderLowerCapacity(DeploymentBuilder deploymentBuilder);
 
-    abstract protected void updateDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength);
+    abstract protected void updateDefenderDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength);
 
-    abstract protected void updateLowerDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength);
+    abstract protected void updateDefenderLowerDeployment(DeploymentBuilder deploymentBuilder, int deploymentStrength);
 
     @Override
     public String toString() {
